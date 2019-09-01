@@ -1,12 +1,14 @@
 import pygame
+from Ball import Ball
+from random import randint
 
 
 pygame.init()
 
 width, height = 400, 300
-screen = pygame.display
-screen.set_mode((width, height))
-screen.set_caption("Falling balls")
+screen = pygame.display.set_mode((width, height))
+# screen
+# screen.set_caption("Falling balls")
 
 fps = 60
 clock = pygame.time.Clock()
@@ -17,18 +19,26 @@ key_pressed = False
 
 stack_of_balls = []
 g_acceleration = 9.81
-scale_factor = 1
+scale_factor = 0.2
+ball_radius = 20
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            stack_of_balls.append(event.pos)
+            stack_of_balls.append(Ball(*event.pos, (randint(0, 255), randint(0, 255), randint(0, 255))))
 
-    # pictures here
-    screen.flip()
-    # changes here
+    screen_buffer = screen = pygame.display.set_mode((width, height))
+    for ball in stack_of_balls:
+        pygame.draw.circle(screen_buffer, ball.color, ball.pos(), ball_radius)
+
+    pygame.display.flip()
+
+    for ball in stack_of_balls:
+        if ball.y <= height - ball_radius:
+            ball.move(0, int(scale_factor * g_acceleration))
+
     clock.tick(fps)
 
 pygame.quit()
