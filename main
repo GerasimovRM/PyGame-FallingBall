@@ -1,0 +1,34 @@
+import pygame
+
+
+pygame.init()
+
+width, height = 400, 300
+screen = pygame.display
+screen.set_mode((width, height))
+screen.set_caption("Falling balls")
+
+fps = 60
+clock = pygame.time.Clock()
+delay = 100
+
+running = True
+key_pressed = False
+
+stack_of_balls = []
+g_acceleration = 9.81
+scale_factor = 1
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            stack_of_balls.append(event.pos)
+
+    # pictures here
+    screen.flip()
+    # changes here
+    clock.tick(fps)
+
+pygame.quit()
